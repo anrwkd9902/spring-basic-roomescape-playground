@@ -34,6 +34,10 @@ public class ReservationService {
         Time time = timeRepository.findById(reservationRequest.getTime()).orElseThrow();
         Theme theme = themeRepository.findById(reservationRequest.getTheme()).orElseThrow();
 
+        if (reservationRepository.existsByThemeAndDateAndTime(theme, reservationRequest.getDate(), time)) {
+            throw new IllegalStateException("이미 예약된 시간입니다.");
+        }
+
         Reservation reservation = reservationRepository.save(
                 resolveReservation(reservationRequest, loginMember, time, theme));
 

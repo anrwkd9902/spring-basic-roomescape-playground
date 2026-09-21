@@ -24,14 +24,6 @@ public class Reservation {
     @ManyToOne
     private Member member;
 
-    public Reservation(Long id, String name, LocalDate date, Time time, Theme theme) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.time = time;
-        this.theme = theme;
-    }
-
     public Reservation(String name, LocalDate date, Time time, Theme theme) {
         this.name = name;
         this.date = date;

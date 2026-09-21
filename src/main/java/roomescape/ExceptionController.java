@@ -12,6 +12,11 @@ public class ExceptionController {
         return ResponseEntity.status(401).build();
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Void> handleIllegalStateException(IllegalStateException e) {
+        return ResponseEntity.badRequest().build();
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Void> handleRuntimeException(Exception e) {
         e.printStackTrace();

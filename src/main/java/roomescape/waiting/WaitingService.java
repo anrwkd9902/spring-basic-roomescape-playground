@@ -2,6 +2,7 @@ package roomescape.waiting;
 
 import org.springframework.stereotype.Service;
 import roomescape.auth.LoginMember;
+import roomescape.reservation.ReservationRepository;
 import roomescape.theme.Theme;
 import roomescape.theme.ThemeRepository;
 import roomescape.time.Time;
@@ -12,16 +13,23 @@ public class WaitingService {
     private WaitingRepository waitingRepository;
     private TimeRepository timeRepository;
     private ThemeRepository themeRepository;
+    private ReservationRepository reservationRepository;
 
-    public WaitingService(WaitingRepository waitingRepository, TimeRepository timeRepository, ThemeRepository themeRepository) {
+    public WaitingService(WaitingRepository waitingRepository, TimeRepository timeRepository,
+                           ThemeRepository themeRepository, ReservationRepository reservationRepository) {
         this.waitingRepository = waitingRepository;
         this.timeRepository = timeRepository;
         this.themeRepository = themeRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public WaitingResponse save(WaitingRequest request, LoginMember loginMember) {
         Time time = timeRepository.findById(request.getTime()).orElseThrow();
         Theme theme = themeRepository.findById(request.getTheme()).orElseThrow();
+
+        if (!reservationRepository.existsByThemeAndDateAndTime(theme, request.getDate(), time)) {
+            throw new IllegalStateException("예약이 존재하지 않는 시간에는 대기를 신청할 수 없습니다.");
+        }
 
         Waiting waiting = waitingRepository.save(
                 new Waiting(loginMember.getId(), request.getDate(), time, theme));
