@@ -8,8 +8,10 @@ import roomescape.theme.Theme;
 import roomescape.theme.ThemeRepository;
 import roomescape.time.Time;
 import roomescape.time.TimeRepository;
+import roomescape.waiting.WaitingRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ReservationService {
@@ -17,13 +19,15 @@ public class ReservationService {
     private TimeRepository timeRepository;
     private ThemeRepository themeRepository;
     private MemberRepository memberRepository;
+    private WaitingRepository waitingRepository;
 
     public ReservationService(ReservationRepository reservationRepository, TimeRepository timeRepository,
-                              ThemeRepository themeRepository, MemberRepository memberRepository) {
+                              ThemeRepository themeRepository, MemberRepository memberRepository, WaitingRepository waitingRepository) {
         this.reservationRepository = reservationRepository;
         this.timeRepository = timeRepository;
         this.themeRepository = themeRepository;
         this.memberRepository = memberRepository;
+        this.waitingRepository = waitingRepository;
     }
 
     public ReservationResponse save(ReservationRequest reservationRequest, LoginMember loginMember) {
@@ -64,8 +68,19 @@ public class ReservationService {
     }
 
     public List<MyReservationResponse> findMine(LoginMember loginMember) {
-        return reservationRepository.findByMemberId(loginMember.getId()).stream()
+        List<MyReservationResponse> reservations = reservationRepository.findByMemberId(loginMember.getId()).stream()
                 .map(it -> new MyReservationResponse(it.getId(), it.getTheme().getName(), it.getDate(), it.getTime().getValue(), "예약"))
                 .toList();
+
+        List<MyReservationResponse> waitings = waitingRepository.findWaitingsWithRankByMemberId(loginMember.getId()).stream()
+                .map(it -> new MyReservationResponse(
+                        it.getWaiting().getId(),
+                        it.getWaiting().getTheme().getName(),
+                        it.getWaiting().getDate(),
+                        it.getWaiting().getTime().getValue(),
+                        (it.getRank() + 1) + "번째 예약대기"))
+                .toList();
+
+        return Stream.concat(reservations.stream(), waitings.stream()).toList();
     }
 }

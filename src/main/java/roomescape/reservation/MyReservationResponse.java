@@ -4,22 +4,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class MyReservationResponse {
-    private Long reservationId;
+    private Long id;
     private String theme;
     private LocalDate date;
     private LocalTime time;
     private String status;
 
-    public MyReservationResponse(Long reservationId, String theme, LocalDate date, LocalTime time, String status) {
-        this.reservationId = reservationId;
+    public MyReservationResponse(Long id, String theme, LocalDate date, LocalTime time, String status) {
+        this.id = id;
         this.theme = theme;
         this.date = date;
         this.time = time;
         this.status = status;
     }
 
-    public Long getReservationId() {
-        return reservationId;
+    public Long getId() {
+        return id;
     }
 
     public String getTheme() {
