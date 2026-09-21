@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import roomescape.time.Time;
 import roomescape.time.TimeRepository;
 
+import java.time.LocalTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -20,7 +22,7 @@ public class JpaTest {
 
     @Test
     void 사단계() {
-        Time time = new Time("10:00");
+        Time time = new Time(LocalTime.of(10, 0));
         entityManager.persist(time);
         entityManager.flush();
 

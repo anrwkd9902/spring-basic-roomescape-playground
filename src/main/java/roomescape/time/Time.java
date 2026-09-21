@@ -2,6 +2,8 @@ package roomescape.time;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
+
 @Entity
 public class Time {
     @Id
@@ -9,7 +11,7 @@ public class Time {
     private Long id;
 
     @Column(name = "time_value")
-    private String value;
+    private LocalTime value;
 
     private boolean deleted = false;
 
@@ -17,12 +19,12 @@ public class Time {
         this.deleted = true;
     }
 
-    public Time(Long id, String value) {
+    public Time(Long id, LocalTime value) {
         this.id = id;
         this.value = value;
     }
 
-    public Time(String value) {
+    public Time(LocalTime value) {
         this.value = value;
     }
 
@@ -34,7 +36,7 @@ public class Time {
         return id;
     }
 
-    public String getValue() {
+    public LocalTime getValue() {
         return value;
     }
 }
