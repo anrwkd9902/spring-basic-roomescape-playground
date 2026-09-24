@@ -66,7 +66,7 @@ public class ReservationService {
     }
 
     public List<ReservationResponse> findAll() {
-        return reservationRepository.findAll().stream()
+        return reservationRepository.findAllWithDetails().stream()
                 .map(it -> new ReservationResponse(it.getId(), resolveName(it), it.getTheme().getName(), it.getDate(), it.getTime().getValue()))
                 .toList();
     }

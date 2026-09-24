@@ -14,10 +14,10 @@ public class Waiting {
     private Long memberId;
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Time time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Theme theme;
 
     public Waiting() {}

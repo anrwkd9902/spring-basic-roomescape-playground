@@ -15,13 +15,13 @@ public class Reservation {
     private String name;
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Time time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Theme theme;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
     public Reservation(String name, LocalDate date, Time time, Theme theme) {
