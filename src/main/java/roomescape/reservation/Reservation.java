@@ -25,6 +25,9 @@ public class Reservation {
     private Member member;
 
     public Reservation(String name, LocalDate date, Time time, Theme theme) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("name은 비어있을 수 없습니다.");
+        }
         this.name = name;
         this.date = date;
         this.time = time;
@@ -32,13 +35,16 @@ public class Reservation {
     }
 
     public Reservation(Member member, LocalDate date, Time time, Theme theme) {
+        if (member == null) {
+            throw new IllegalArgumentException("member는 비어있을 수 없습니다.");
+        }
         this.member = member;
         this.date = date;
         this.time = time;
         this.theme = theme;
     }
 
-    public Reservation() {}
+    protected Reservation() {}
 
     public Long getId() {
         return id;
