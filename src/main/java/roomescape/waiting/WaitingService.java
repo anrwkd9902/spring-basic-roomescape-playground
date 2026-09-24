@@ -24,8 +24,8 @@ public class WaitingService {
     }
 
     public WaitingResponse save(WaitingRequest request, LoginMember loginMember) {
-        Time time = timeRepository.findById(request.getTime()).orElseThrow();
-        Theme theme = themeRepository.findById(request.getTheme()).orElseThrow();
+        Time time = timeRepository.findByIdAndDeletedFalse(request.getTime()).orElseThrow();
+        Theme theme = themeRepository.findByIdAndDeletedFalse(request.getTheme()).orElseThrow();
 
         if (!reservationRepository.existsByThemeAndDateAndTime(theme, request.getDate(), time)) {
             throw new IllegalStateException("예약이 존재하지 않는 시간에는 대기를 신청할 수 없습니다.");

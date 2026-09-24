@@ -31,8 +31,8 @@ public class ReservationService {
     }
 
     public ReservationResponse save(ReservationRequest reservationRequest, LoginMember loginMember) {
-        Time time = timeRepository.findById(reservationRequest.getTime()).orElseThrow();
-        Theme theme = themeRepository.findById(reservationRequest.getTheme()).orElseThrow();
+        Time time = timeRepository.findByIdAndDeletedFalse(reservationRequest.getTime()).orElseThrow();
+        Theme theme = themeRepository.findByIdAndDeletedFalse(reservationRequest.getTheme()).orElseThrow();
 
         if (reservationRepository.existsByThemeAndDateAndTime(theme, reservationRequest.getDate(), time)) {
             throw new IllegalStateException("이미 예약된 시간입니다.");
