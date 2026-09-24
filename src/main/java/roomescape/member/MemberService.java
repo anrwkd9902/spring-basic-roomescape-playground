@@ -1,9 +1,11 @@
 package roomescape.member;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import roomescape.auth.JwtTokenProvider;
 
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
     private MemberRepository memberRepository;
     private JwtTokenProvider jwtTokenProvider;
@@ -13,6 +15,7 @@ public class MemberService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Transactional
     public MemberResponse createMember(MemberRequest memberRequest) {
         Member member = memberRepository.save(new Member(memberRequest.getName(), memberRequest.getEmail(), memberRequest.getPassword(), "USER"));
         return new MemberResponse(member.getId(), member.getName(), member.getEmail());

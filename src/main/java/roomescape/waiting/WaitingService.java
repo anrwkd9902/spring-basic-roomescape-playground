@@ -1,6 +1,7 @@
 package roomescape.waiting;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import roomescape.auth.LoginMember;
 import roomescape.reservation.ReservationRepository;
 import roomescape.theme.Theme;
@@ -9,6 +10,7 @@ import roomescape.time.Time;
 import roomescape.time.TimeRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class WaitingService {
     private WaitingRepository waitingRepository;
     private TimeRepository timeRepository;
@@ -23,6 +25,7 @@ public class WaitingService {
         this.reservationRepository = reservationRepository;
     }
 
+    @Transactional
     public WaitingResponse save(WaitingRequest request, LoginMember loginMember) {
         Time time = timeRepository.findByIdAndDeletedFalse(request.getTime()).orElseThrow();
         Theme theme = themeRepository.findByIdAndDeletedFalse(request.getTheme()).orElseThrow();
@@ -37,6 +40,7 @@ public class WaitingService {
         return new WaitingResponse(waiting.getId());
     }
 
+    @Transactional
     public void deleteById(Long id) {
         waitingRepository.deleteById(id);
     }
